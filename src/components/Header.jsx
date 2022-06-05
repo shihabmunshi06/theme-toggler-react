@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import {useRef} from "react"
+
 function Header() {
 
     const setDarkMode = () => {
@@ -10,12 +13,19 @@ function Header() {
         localStorage.setItem("colorMode", "light")
     }
 
-    let colorMode = localStorage.getItem("colorMode");
-    if (colorMode === "light") {
-        setLightMode()
-    } else {
-        setDarkMode()
-    }
+    const clicker = useRef(null);
+    useEffect(() => {
+        let colorMode = localStorage.getItem("colorMode");
+        if (colorMode === "light") {
+            setLightMode();
+            clicker.current.click();
+        } else {
+            setDarkMode();
+        }
+    }, [])
+
+
+
     return (
         <header className="flex sb">
             <div className="header-texts">
@@ -32,7 +42,7 @@ function Header() {
 
                 <div className="inputs-wrapper flex">
                     <input onClick={setDarkMode} type="radio" name="theme" id="dark" />
-                    <input onClick={setLightMode} type="radio" name="theme" id="light" />
+                    <input onClick={setLightMode}  ref={clicker} type="radio" name="theme" id="light" />
                     <div className="toggle-bg"></div>
                     <div className="toggle-switch"></div>
                 </div>
